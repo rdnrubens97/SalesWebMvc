@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
 using SalesWebMvc;
 using Microsoft.Extensions.Localization;
+using SalesWebMvc.Services;
+using SalesWebMvc.Models; 
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SellerService>();
 
 var connectionStringMysql = builder.Configuration.GetConnectionString("SalesWebMvcContext");
 builder.Services.AddDbContext<SalesWebMvcContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("SalesWebMvcContext"), MySqlServerVersion.LatestSupportedServerVersion, builder => builder.MigrationsAssembly("SalesWebMvc")));
@@ -39,16 +42,13 @@ if (!app.Environment.IsDevelopment())
 
 app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
 
+
+
 app.UseDeveloperExceptionPage();
-
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
