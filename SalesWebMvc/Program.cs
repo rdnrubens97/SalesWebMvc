@@ -20,8 +20,8 @@ var connectionStringMysql = builder.Configuration.GetConnectionString("SalesWebM
 builder.Services.AddDbContext<SalesWebMvcContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("SalesWebMvcContext"), MySqlServerVersion.LatestSupportedServerVersion, builder => builder.MigrationsAssembly("SalesWebMvc")));
 
 builder.Services.AddScoped<SeedingService>();
-//builder.Services.AddScoped<SellerService>();
-//builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<SellerService>();
+builder.Services.AddScoped<DepartmentService>();
 //builder.Services.AddScoped<SalesRecordService>();
 
 var app = builder.Build();
@@ -40,7 +40,7 @@ if (!app.Environment.IsDevelopment())
 //no Startup do programa. Apesar de ter uma lógica para não repopular o banco, vou deixar aqui comentado pra
 //não ficar rodando sempre que executar o programa.
 
-app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
+//app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
 
 
 
